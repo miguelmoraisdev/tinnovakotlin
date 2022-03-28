@@ -1,5 +1,6 @@
 package com.kotlin.desafiotinnova.controllers
 
+import com.kotlin.desafiotinnova.dtos.NumberUnsoldDTO
 import com.kotlin.desafiotinnova.dtos.VeiculoDTO
 import com.kotlin.desafiotinnova.dtos.VeiculoPatchDTO
 import com.kotlin.desafiotinnova.services.VeiculoService
@@ -19,6 +20,11 @@ class VeiculoController(
     @GetMapping
     fun findAll(pageable: Pageable): ResponseEntity<Page<VeiculoDTO>> {
         return ResponseEntity.ok().body(service.findAll(pageable))
+    }
+
+    @GetMapping("/numberOfUnsoldVehicles")
+    fun findUnsold(): ResponseEntity<NumberUnsoldDTO> {
+        return ResponseEntity.ok().body(service.findUnsoldVeiculos())
     }
 
     @GetMapping("/{id}")

@@ -20,3 +20,8 @@ data class VeiculoDTO(
 data class VeiculoPatchDTO(
     val vendido: Boolean
 )
+
+data class NumberUnsoldDTO(
+    val numeroVeiculos: Int,
+    val message: String
+)

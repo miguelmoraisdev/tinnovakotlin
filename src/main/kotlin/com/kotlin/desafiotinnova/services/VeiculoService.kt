@@ -1,5 +1,6 @@
 package com.kotlin.desafiotinnova.services
 
+import com.kotlin.desafiotinnova.dtos.NumberUnsoldDTO
 import com.kotlin.desafiotinnova.dtos.VeiculoDTO
 import com.kotlin.desafiotinnova.dtos.VeiculoPatchDTO
 import com.kotlin.desafiotinnova.entities.Veiculo
@@ -22,6 +23,13 @@ class VeiculoService(
     @Transactional(readOnly = true)
     fun findAll(pageable: Pageable): Page<VeiculoDTO> {
         return repository.findAll(pageable).map { x -> VeiculoDTO(x) }
+    }
+
+    @Transactional(readOnly = true)
+    fun findUnsoldVeiculos(): NumberUnsoldDTO {
+        return repository.numberOfUnsoldVeiculos().let {
+            NumberUnsoldDTO(it, "Numero de veículos não vendidos")
+        }
     }
 
     @Transactional(readOnly = true)
