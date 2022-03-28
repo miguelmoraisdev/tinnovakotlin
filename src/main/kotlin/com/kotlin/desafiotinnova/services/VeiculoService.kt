@@ -1,9 +1,13 @@
 package com.kotlin.desafiotinnova.services
 
 import com.kotlin.desafiotinnova.dtos.VeiculoDTO
+import com.kotlin.desafiotinnova.dtos.VeiculoPatchDTO
 import com.kotlin.desafiotinnova.entities.Veiculo
 import com.kotlin.desafiotinnova.repositories.VeiculoRepository
+import com.kotlin.desafiotinnova.services.exceptions.DatabaseException
 import com.kotlin.desafiotinnova.services.exceptions.ResourceNotFoundException
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -17,8 +21,7 @@ class VeiculoService(
 
     @Transactional(readOnly = true)
     fun findAll(pageable: Pageable): Page<VeiculoDTO> {
-        val page: Page<Veiculo> = repository.findAll(pageable)
-        return page.map { x -> VeiculoDTO(x) }
+        return repository.findAll(pageable).map { x -> VeiculoDTO(x) }
     }
 
     @Transactional(readOnly = true)
@@ -37,11 +40,28 @@ class VeiculoService(
 
     @Transactional
     fun updateVeiculo(id: Long, veiculoDTO: VeiculoDTO): VeiculoDTO {
-        val obj = repository.findById(id)
-        val veiculo = obj.orElseThrow { ResourceNotFoundException("Veiculo com  id ${id} não existe") }
-        var car = Veiculo(veiculo.id, veiculoDTO.veiculo,
-            veiculoDTO.marca, veiculoDTO.ano,veiculoDTO.descricao, veiculoDTO.vendido, veiculo.created, LocalDateTime.now())
+        val obj = repository.findById(id).orElseThrow {ResourceNotFoundException("Veiculo com  id ${id} não existe")}
+        var car = Veiculo(obj.id, veiculoDTO.veiculo,
+            veiculoDTO.marca, veiculoDTO.ano,veiculoDTO.descricao, veiculoDTO.vendido, obj.created, LocalDateTime.now())
         return VeiculoDTO(repository.save(car))
+    }
+    @Transactional
+    fun updateVendido(id: Long, veiculoDTO: VeiculoPatchDTO): VeiculoDTO {
+        val obj = repository.findById(id).orElseThrow {ResourceNotFoundException("Veiculo com  id ${id} não existe")}
+        obj.vendido = veiculoDTO.vendido
+        obj.updated = LocalDateTime.now()
+        return VeiculoDTO(repository.save(obj))
+    }
+
+    @Transactional
+    fun deleteVeiculo(id: Long) {
+        try {
+            repository.deleteById(id)
+        } catch (e: EmptyResultDataAccessException) {
+            throw ResourceNotFoundException("Veiculo com  id ${id} não existe")
+        } catch (e: DataIntegrityViolationException) {
+            throw DatabaseException("Integrity Violation")
+        }
     }
 
 }

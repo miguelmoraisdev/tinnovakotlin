@@ -16,3 +16,7 @@ data class VeiculoDTO(
                 id = entity.id, veiculo = entity.veiculo, marca = entity.marca,
                 ano = entity.ano, descricao = entity.descricao, vendido = entity.vendido)
 }
+
+data class VeiculoPatchDTO(
+    val vendido: Boolean
+)

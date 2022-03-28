@@ -1,6 +1,7 @@
 package com.kotlin.desafiotinnova.controllers
 
 import com.kotlin.desafiotinnova.dtos.VeiculoDTO
+import com.kotlin.desafiotinnova.dtos.VeiculoPatchDTO
 import com.kotlin.desafiotinnova.services.VeiculoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -17,14 +18,12 @@ class VeiculoController(
 
     @GetMapping
     fun findAll(pageable: Pageable): ResponseEntity<Page<VeiculoDTO>> {
-        val pageDTO = service.findAll(pageable)
-        return ResponseEntity.ok().body(pageDTO)
+        return ResponseEntity.ok().body(service.findAll(pageable))
     }
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): ResponseEntity<VeiculoDTO> {
-        val dto = service.findById(id)
-        return ResponseEntity.ok().body(dto)
+        return ResponseEntity.ok().body(service.findById(id))
     }
 
     @PostMapping
@@ -36,5 +35,17 @@ class VeiculoController(
     fun updateVeiculo(@PathVariable id: Long, @RequestBody veiculoDTO: VeiculoDTO): ResponseEntity<VeiculoDTO> {
         return ResponseEntity.ok().body(service.updateVeiculo(id, veiculoDTO))
     }
+
+    @PatchMapping("/{id}")
+    fun patchVeiculo(@PathVariable id: Long, @RequestBody patchDTO: VeiculoPatchDTO): ResponseEntity<VeiculoDTO> {
+        return ResponseEntity.ok().body(service.updateVendido(id, patchDTO))
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteVeiculo(@PathVariable id: Long): ResponseEntity<Unit>{
+        service.deleteVeiculo(id)
+        return ResponseEntity.noContent().build()
+    }
+
 
 }
