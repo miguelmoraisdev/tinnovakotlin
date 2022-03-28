@@ -6,17 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
 @RequestMapping("/veiculos")
-class VeiculoController {
-
-    @Autowired
-    private lateinit var service: VeiculoService
+class VeiculoController(
+    private val service: VeiculoService
+) {
 
     @GetMapping
     fun findAll(pageable: Pageable): ResponseEntity<Page<VeiculoDTO>> {
@@ -24,5 +21,20 @@ class VeiculoController {
         return ResponseEntity.ok().body(pageDTO)
     }
 
+    @GetMapping("/{id}")
+    fun findById(@PathVariable id: Long): ResponseEntity<VeiculoDTO> {
+        val dto = service.findById(id)
+        return ResponseEntity.ok().body(dto)
+    }
+
+    @PostMapping
+    fun createVeiculo(@RequestBody veiculoDTO: VeiculoDTO): ResponseEntity<VeiculoDTO> {
+        return ResponseEntity.ok().body(service.insertVeiculo(veiculoDTO))
+    }
+
+    @PutMapping("/{id}")
+    fun updateVeiculo(@PathVariable id: Long, @RequestBody veiculoDTO: VeiculoDTO): ResponseEntity<VeiculoDTO> {
+        return ResponseEntity.ok().body(service.updateVeiculo(id, veiculoDTO))
+    }
 
 }

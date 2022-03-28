@@ -2,6 +2,7 @@ package com.kotlin.desafiotinnova.entities
 
 
 import java.time.Instant
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -10,7 +11,7 @@ data class Veiculo(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long?,
     var veiculo: String,
     var marca: String,
     var ano: Integer,
@@ -19,10 +20,10 @@ data class Veiculo(
     var vendido: Boolean,
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    var created: Instant,
+    var created: LocalDateTime,
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    var updated: Instant
+    var updated: LocalDateTime?
 
 
 

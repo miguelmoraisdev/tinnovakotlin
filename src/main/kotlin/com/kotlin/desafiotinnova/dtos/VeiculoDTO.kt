@@ -2,9 +2,9 @@ package com.kotlin.desafiotinnova.dtos
 
 import com.kotlin.desafiotinnova.entities.Veiculo
 
-class VeiculoDTO(
+data class VeiculoDTO(
 
-    var id: Long,
+    var id: Long? = null,
     var veiculo: String,
     var marca: String,
     var ano: Integer,
@@ -12,6 +12,7 @@ class VeiculoDTO(
     var vendido: Boolean
 ) {
     constructor(entity: Veiculo) :
-            this(id = entity.id, veiculo = entity.veiculo, marca = entity.marca,
+            this(
+                id = entity.id, veiculo = entity.veiculo, marca = entity.marca,
                 ano = entity.ano, descricao = entity.descricao, vendido = entity.vendido)
 }
