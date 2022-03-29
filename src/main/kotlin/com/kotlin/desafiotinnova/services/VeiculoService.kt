@@ -1,8 +1,6 @@
 package com.kotlin.desafiotinnova.services
 
-import com.kotlin.desafiotinnova.dtos.NumberUnsoldDTO
-import com.kotlin.desafiotinnova.dtos.VeiculoDTO
-import com.kotlin.desafiotinnova.dtos.VeiculoPatchDTO
+import com.kotlin.desafiotinnova.dtos.*
 import com.kotlin.desafiotinnova.entities.Veiculo
 import com.kotlin.desafiotinnova.repositories.VeiculoRepository
 import com.kotlin.desafiotinnova.services.exceptions.DatabaseException
@@ -14,6 +12,8 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.*
+import java.util.stream.Collectors
 
 @Service
 class VeiculoService(
@@ -30,6 +30,20 @@ class VeiculoService(
         return repository.numberOfUnsoldVeiculos().let {
             NumberUnsoldDTO(it, "Numero de veículos não vendidos")
         }
+    }
+
+    @Transactional(readOnly = true)
+    fun findVeiculosPerCompany(): List<VeiculosCompanyDTO> {
+        return repository.getVeiculosPerCompany().stream().map {
+            VeiculosCompanyDTO(it.marca, it.qtdVeiculos)
+        }.collect(Collectors.toList())
+    }
+
+    @Transactional(readOnly = true)
+    fun findVeiculosPerDecade(): List<VeiculosDecadeDTO> {
+        return repository.getVeiculosPerDecade().stream().map {
+            VeiculosDecadeDTO(it.decade, it.qtdVeiculos)
+        }.collect(Collectors.toList())
     }
 
     @Transactional(readOnly = true)

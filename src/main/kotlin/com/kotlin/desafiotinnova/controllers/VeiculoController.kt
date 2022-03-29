@@ -1,8 +1,6 @@
 package com.kotlin.desafiotinnova.controllers
 
-import com.kotlin.desafiotinnova.dtos.NumberUnsoldDTO
-import com.kotlin.desafiotinnova.dtos.VeiculoDTO
-import com.kotlin.desafiotinnova.dtos.VeiculoPatchDTO
+import com.kotlin.desafiotinnova.dtos.*
 import com.kotlin.desafiotinnova.services.VeiculoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -25,6 +23,16 @@ class VeiculoController(
     @GetMapping("/numberOfUnsoldVehicles")
     fun findUnsold(): ResponseEntity<NumberUnsoldDTO> {
         return ResponseEntity.ok().body(service.findUnsoldVeiculos())
+    }
+
+    @GetMapping("/amountVehiclesPerCompany")
+    fun findQtdVehiclesPerCompany(): ResponseEntity<List<VeiculosCompanyDTO>> {
+        return ResponseEntity.ok().body(service.findVeiculosPerCompany())
+    }
+
+    @GetMapping("/VehiclesPerDecade")
+    fun findQtdVeiculosPerDecade(): ResponseEntity<List<VeiculosDecadeDTO>> {
+        return ResponseEntity.ok().body(service.findVeiculosPerDecade())
     }
 
     @GetMapping("/{id}")

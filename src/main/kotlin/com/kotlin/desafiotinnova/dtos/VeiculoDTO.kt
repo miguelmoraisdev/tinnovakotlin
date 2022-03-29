@@ -25,3 +25,13 @@ data class NumberUnsoldDTO(
     val numeroVeiculos: Int,
     val message: String
 )
+
+data class VeiculosCompanyDTO(
+    val marca: String,
+    val qtdVeiculos: Int
+)
+
+data class VeiculosDecadeDTO(
+    val decade: String,
+    val qtdVeiculos: Int
+)
