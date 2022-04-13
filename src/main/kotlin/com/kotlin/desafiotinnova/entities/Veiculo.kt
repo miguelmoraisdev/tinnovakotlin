@@ -14,7 +14,7 @@ data class Veiculo(
     var id: Long?,
     var veiculo: String,
     var marca: String,
-    var ano: Integer,
+    var ano: Int,
     @Column(columnDefinition = "TEXT")
     var descricao: String,
     var vendido: Boolean,

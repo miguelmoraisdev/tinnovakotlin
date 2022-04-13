@@ -7,7 +7,7 @@ data class VeiculoDTO(
     var id: Long? = null,
     var veiculo: String,
     var marca: String,
-    var ano: Integer,
+    var ano: Int,
     var descricao: String,
     var vendido: Boolean
 ) {

@@ -1,0 +1,39 @@
+{
+    "namespace": "com.kotlin.desafiotinnova",
+    "type": "record",
+    "name": "Veiculo",
+    "fields": [
+        {
+            "name": "id",
+            "type": "long"
+        },
+        {
+            "name": "veiculo",
+            "type": "string"
+        },
+        {
+            "name": "marca",
+            "type": "string"
+        },
+        {
+            "name": "ano",
+            "type": "int"
+        },
+        {
+            "name": "descricao",
+            "type": "string"
+        },
+        {
+            "name": "vendido",
+            "type": "boolean"
+        },
+        {
+            "name": "created",
+            "type": "string"
+        },
+        {
+            "name": "updated",
+            "type": "string"
+        }
+    ]
+}

@@ -2,6 +2,7 @@ package com.kotlin.desafiotinnova.services
 
 import com.kotlin.desafiotinnova.dtos.*
 import com.kotlin.desafiotinnova.entities.Veiculo
+import com.kotlin.desafiotinnova.producers.VeiculoProducer
 import com.kotlin.desafiotinnova.repositories.VeiculoRepository
 import com.kotlin.desafiotinnova.services.exceptions.DatabaseException
 import com.kotlin.desafiotinnova.services.exceptions.ResourceNotFoundException
@@ -17,7 +18,8 @@ import java.util.stream.Collectors
 
 @Service
 class VeiculoService(
-    private val repository: VeiculoRepository
+    private val repository: VeiculoRepository,
+    private val veiculoProducer: VeiculoProducer
 ) {
 
     @Transactional(readOnly = true)
@@ -57,7 +59,12 @@ class VeiculoService(
     fun insertVeiculo(veiculoDTO: VeiculoDTO): VeiculoDTO {
         var car = Veiculo(null,veiculoDTO.veiculo,
             veiculoDTO.marca, veiculoDTO.ano,veiculoDTO.descricao, veiculoDTO.vendido, LocalDateTime.now(), null )
-        return VeiculoDTO(repository.save(car))
+        car = repository.save(car)
+        var message = com.kotlin.desafiotinnova.Veiculo(
+            car.id, car.veiculo, car.marca, car.ano,
+            car.descricao, car.vendido, car.created.toString(), car.updated.toString())
+        veiculoProducer.sendMessage(message)
+        return VeiculoDTO(car)
     }
 
     @Transactional
